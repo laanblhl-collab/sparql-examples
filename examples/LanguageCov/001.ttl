@@ -8,6 +8,9 @@ ex:001 a sh:SPARQLExecutable,
     rdfs:comment "Coverage of the SNOMED-CT terminology wikidata property across 6 languages"@en ;
     sh:prefixes _:sparql_examples_prefixes ;
     sh:select """
+PREFIX wikibase: <http://wikiba.se/ontology#>
+PREFIX schema: <http://schema.org/>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 SELECT ?lang ?nItems ?nsnomed_withWiki
        (?nItems * 1.0 / ?nsnomed_withWiki AS ?coverageAmongWiki)
 WHERE {
