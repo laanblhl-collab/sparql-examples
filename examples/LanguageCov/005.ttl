@@ -3,7 +3,7 @@
 @prefix schema: <https://schema.org/> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 
-ex:001 a sh:SPARQLExecutable,
+ex:005 a sh:SPARQLExecutable,
         sh:SPARQLSelectExecutable ;
     rdfs:comment "Shows overlap of all the related ontologies and how many of those are available in 6 languages"@en ;
     sh:prefixes _:sparql_examples_prefixes ;
@@ -50,5 +50,4 @@ WHERE {
   BIND(IF(?nLangs6 = 6, 1, 0) AS ?allSix)
 }
 """ ;
-    schema:target <https://sparql.uniprot.org/sparql/>, #clever and wikdi
-        <https://www.bgee.org/sparql/>, <https://sparql.omabrowser.org/sparql/> .
+    schema:target <https://qlever.dev/wikidata>, <https://query.wikidata.org/>  .

@@ -3,7 +3,7 @@
 @prefix schema: <https://schema.org/> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 
-ex:001 a sh:SPARQLExecutable,
+ex:003 a sh:SPARQLExecutable,
         sh:SPARQLSelectExecutable ;
     rdfs:comment "how many entities have been documented in all 4 terminologies"@en ;
     sh:prefixes _:sparql_examples_prefixes ;
@@ -17,5 +17,4 @@ WHERE {
         wdt:P5270 ?mondoId .
 }
 """ ;
-    schema:target <https://sparql.uniprot.org/sparql/>, #clever and wikdi
-        <https://www.bgee.org/sparql/>, <https://sparql.omabrowser.org/sparql/> .
+    schema:target <https://qlever.dev/wikidata>, <https://query.wikidata.org/>  .

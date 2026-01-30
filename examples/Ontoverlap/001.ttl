@@ -47,5 +47,4 @@ GROUP BY ?hasSNOMED ?hasDOID ?hasORDO ?hasMONDO
 ORDER BY ?hasSNOMED ?hasDOID ?hasORDO ?hasMONDO
 
 """ ;
-    schema:target <https://sparql.uniprot.org/sparql/>, #clever and wikdi
-        <https://www.bgee.org/sparql/>, <https://sparql.omabrowser.org/sparql/> .
+    schema:target <https://qlever.dev/wikidata>, <https://query.wikidata.org/>  .
