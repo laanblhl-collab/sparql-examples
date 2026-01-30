@@ -1,0 +1,23 @@
+@prefix ex: <https://www.bgee.org/sparql/.well-known/sparql-examples/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <https://schema.org/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+ex:002 a sh:SPARQLExecutable,
+        sh:SPARQLSelectExecutable ;
+    rdfs:comment "Total existing entities which have a ORDO property and wikipedia entry "@en ;
+    sh:prefixes _:sparql_examples_prefixes ;
+    sh:select """
+PREFIX wikibase: <http://wikiba.se/ontology#>
+PREFIX schema: <http://schema.org/>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+SELECT (COUNT(DISTINCT ?itemS) AS ?nORDO)
+WHERE {
+  ?itemS wdt:P5270 ?MondoID.
+  FILTER EXISTS {
+    ?articleS schema:about ?itemS ;
+              schema:isPartOf [ wikibase:wikiGroup "wikipedia" ] .
+  }
+}
+""" ;
+    schema:target <https://qlever.dev/wikidata>, <https://query.wikidata.org/>  .
