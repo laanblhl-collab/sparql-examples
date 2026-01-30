@@ -5,7 +5,7 @@
 
 ex:001 a sh:SPARQLExecutable,
         sh:SPARQLSelectExecutable ;
-    rdfs:comment "Coverage of the SNOMED-CT terminology wikidata property across 6 languages"@en ;
+    rdfs:comment "Coverage of the MONDO terminology wikidata property across 6 languages"@en ;
     sh:prefixes _:sparql_examples_prefixes ;
     sh:select """
 PREFIX wikibase: <http://wikiba.se/ontology#>

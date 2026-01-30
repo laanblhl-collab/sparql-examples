@@ -6,7 +6,8 @@ have a public SPARQL endpoint.
 
 In this github pages we have a HTML rendering for all them.
 
- * [LanguageCoverage](./examples/LanguageCov/)
+ * [Language Coverage](./examples/LanguageCov/)
+ * [Ontology Overlap](./examples/Ontoverlap)
  * [UniProt](./examples/UniProt/)
 
 We also collect [some basic statistics on the different SPARQL features in use](./examples/algebra-statistics.md)

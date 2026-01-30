@@ -5,7 +5,7 @@
 
 ex:001 a sh:SPARQLExecutable,
         sh:SPARQLSelectExecutable ;
-    rdfs:comment "Coverage of the SNOMED-CT terminology wikidata property across 6 languages"@en ;
+    rdfs:comment "how many entities have been documented in all 4 terminologies"@en ;
     sh:prefixes _:sparql_examples_prefixes ;
     sh:select """
 PREFIX wdt: <http://www.wikidata.org/prop/direct/>
