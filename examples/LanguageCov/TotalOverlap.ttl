@@ -1,0 +1,54 @@
+@prefix ex: <https://www.bgee.org/sparql/.well-known/sparql-examples/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <https://schema.org/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+ex:001 a sh:SPARQLExecutable,
+        sh:SPARQLSelectExecutable ;
+    rdfs:comment "Coverage of the SNOMED-CT terminology wikidata property across 6 languages"@en ;
+    sh:prefixes _:sparql_examples_prefixes ;
+    sh:select """
+PREFIX wikibase: <http://wikiba.se/ontology#>
+PREFIX schema: <http://schema.org/>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+SELECT
+  (COUNT(*) AS ?nItems)                         # total items with 4 terminologies
+  (SUM(?allSix) AS ?nItemsAllSix)               # how many have en+fr+pt+de+es+nl
+  (AVG(?nLangs) AS ?avgLangsAll)                # avg # of Wikipedia languages (all)
+  (AVG(?nLangs6) AS ?avgLangsTarget6)           # avg # of languages among en/fr/pt/de/es/nl
+WHERE {
+  {
+    # Per-item language statistics
+    SELECT
+      ?item
+      (COUNT(DISTINCT ?lang) AS ?nLangs)        # total number of Wikipedia languages
+      (
+        MAX(IF(?lang = "en", 1, 0)) +
+        MAX(IF(?lang = "fr", 1, 0)) +
+        MAX(IF(?lang = "pt", 1, 0)) +
+        MAX(IF(?lang = "de", 1, 0)) +
+        MAX(IF(?lang = "es", 1, 0)) +
+        MAX(IF(?lang = "nl", 1, 0))
+      AS ?nLangs6)                              # number of target languages
+    WHERE {
+      # Items with all four ontologies
+      ?item wdt:P5806 ?snomedId ;
+            wdt:P699  ?doidId ;
+            wdt:P1550 ?ordoId ;
+            wdt:P5270 ?mondoId .
+
+      # Any Wikipedia article
+      ?article schema:about ?item ;
+               schema:isPartOf ?site ;
+               schema:inLanguage ?lang .
+      ?site wikibase:wikiGroup "wikipedia" .
+    }
+    GROUP BY ?item
+  }
+
+  # 1 if all 6 target languages are present, else 0
+  BIND(IF(?nLangs6 = 6, 1, 0) AS ?allSix)
+}
+""" ;
+    schema:target <https://sparql.uniprot.org/sparql/>, #clever and wikdi
+        <https://www.bgee.org/sparql/>, <https://sparql.omabrowser.org/sparql/> .

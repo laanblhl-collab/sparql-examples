@@ -11,36 +11,35 @@ ex:001 a sh:SPARQLExecutable,
 PREFIX wikibase: <http://wikiba.se/ontology#>
 PREFIX schema: <http://schema.org/>
 PREFIX wdt: <http://www.wikidata.org/prop/direct/>
-SELECT ?lang ?nItems ?nsnomed_withWiki
-       (?nItems * 1.0 / ?nsnomed_withWiki AS ?coverageAmongWiki)
+SELECT ?lang ?nItems ?nDOID_withWiki
+       (?nItems * 1.0 / ?nDOID_withWiki AS ?coverageAmongWiki)
 WHERE {
-  # items that have at least one Wikipedia sitelink
+  #  items that have at least one Wikipedia sitelink
   {
-    SELECT (COUNT(DISTINCT ?item) AS ?nsnomed_withWiki)
+    SELECT (COUNT(DISTINCT ?itemD) AS ?nDOID_withWiki)
     WHERE {
-      ?item wdt:P5806 ?snomedId .
-      ?art schema:about ?item ;
-            schema:isPartOf ?site .
-      ?site wikibase:wikiGroup "wikipedia" .
+      ?itemD wdt:P699 ?doid .
+      ?artD schema:about ?itemD ;
+            schema:isPartOf ?siteD .
+      ?siteD wikibase:wikiGroup "wikipedia" .
     }
   }
-  # items with an article in each specific language
+  #  items with an article in each specific language
   {
     SELECT ?lang (COUNT(DISTINCT ?wikidata) AS ?nItems)
     WHERE {
-      ?wikidata wdt:P5806 ?snomedId .
+      ?wikidata wdt:P699 ?doid .
+
       ?article schema:about ?wikidata ;
                schema:inLanguage ?lang ;
                schema:isPartOf ?site .
-               ?site wikibase:wikiGroup "wikipedia" .
-               VALUES ?lang { "en" "fr" "pt" "de" "es" "nl" }
-      
+
+      ?site wikibase:wikiGroup "wikipedia" .
+      VALUES ?lang { "en" "fr" "pt" "de" "es" "nl" }
     }
     GROUP BY ?lang
   }
 }
 ORDER BY DESC(?coverageAmongWiki)
-
 """ ;
-    schema:target <https://sparql.uniprot.org/sparql/>, #clever and wikdi
-        <https://www.bgee.org/sparql/>, <https://sparql.omabrowser.org/sparql/> .
+    schema:target <https://qlever.dev/wikidata>, <https://query.wikidata.org/>  .

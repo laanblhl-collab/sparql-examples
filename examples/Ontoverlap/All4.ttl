@@ -1,0 +1,21 @@
+@prefix ex: <https://www.bgee.org/sparql/.well-known/sparql-examples/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <https://schema.org/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+ex:001 a sh:SPARQLExecutable,
+        sh:SPARQLSelectExecutable ;
+    rdfs:comment "Coverage of the SNOMED-CT terminology wikidata property across 6 languages"@en ;
+    sh:prefixes _:sparql_examples_prefixes ;
+    sh:select """
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+SELECT (COUNT(DISTINCT ?item) AS ?nAllFour)
+WHERE {
+  ?item wdt:P5806 ?snomedId ;
+        wdt:P699  ?doidId ;
+        wdt:P1550 ?ordoId ;
+        wdt:P5270 ?mondoId .
+}
+""" ;
+    schema:target <https://sparql.uniprot.org/sparql/>, #clever and wikdi
+        <https://www.bgee.org/sparql/>, <https://sparql.omabrowser.org/sparql/> .

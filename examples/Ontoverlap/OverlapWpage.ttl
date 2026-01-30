@@ -1,0 +1,51 @@
+@prefix ex: <https://www.bgee.org/sparql/.well-known/sparql-examples/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <https://schema.org/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+ex:001 a sh:SPARQLExecutable,
+        sh:SPARQLSelectExecutable ;
+    rdfs:comment "Coverage of the SNOMED-CT terminology wikidata property across 6 languages"@en ;
+    sh:prefixes _:sparql_examples_prefixes ;
+    sh:select """
+PREFIX wikibase: <http://wikiba.se/ontology#>
+PREFIX schema: <http://schema.org/>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+SELECT
+  (COUNT(DISTINCT ?wikidata) AS ?countItems)
+  ?hasSNOMED ?hasDOID ?hasORDO ?hasMONDO
+WHERE {
+  # Universe: items that have at least one of the four identifiers
+  {
+    ?wikidata wdt:P5806 ?_snomed .
+  } UNION {
+    ?wikidata wdt:P699  ?_doid .
+  } UNION {
+    ?wikidata wdt:P1550 ?_ordo .
+  } UNION {
+    ?wikidata wdt:P5270 ?_mondo .
+  }
+
+  # Restrict to items that have an English Wikipedia article
+  ?article schema:about ?wikidata ;
+           schema:isPartOf ?site.
+		   ?site wikibase:wikiGroup "wikipedia" .
+
+  # Make all four identifiers OPTIONAL
+  OPTIONAL { ?wikidata wdt:P5806 ?snomedId . }  # SNOMED
+  OPTIONAL { ?wikidata wdt:P699  ?doid . }      # DOID
+  OPTIONAL { ?wikidata wdt:P1550 ?ordo . }      # ORDO
+  OPTIONAL { ?wikidata wdt:P5270 ?mondo . }     # MONDO
+
+  # Turn presence/absence into booleans
+  BIND(BOUND(?snomedId) AS ?hasSNOMED)
+  BIND(BOUND(?doid)     AS ?hasDOID)
+  BIND(BOUND(?ordo)     AS ?hasORDO)
+  BIND(BOUND(?mondo)    AS ?hasMONDO)
+}
+GROUP BY ?hasSNOMED ?hasDOID ?hasORDO ?hasMONDO
+ORDER BY ?hasSNOMED ?hasDOID ?hasORDO ?hasMONDO
+
+""" ;
+    schema:target <https://sparql.uniprot.org/sparql/>, #clever and wikdi
+        <https://www.bgee.org/sparql/>, <https://sparql.omabrowser.org/sparql/> .

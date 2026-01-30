@@ -11,14 +11,14 @@ ex:001 a sh:SPARQLExecutable,
 PREFIX wikibase: <http://wikiba.se/ontology#>
 PREFIX schema: <http://schema.org/>
 PREFIX wdt: <http://www.wikidata.org/prop/direct/>
-SELECT ?lang ?nItems ?nsnomed_withWiki
-       (?nItems * 1.0 / ?nsnomed_withWiki AS ?coverageAmongWiki)
+SELECT ?lang ?nItems ?nmondo_withWiki
+       (?nItems * 1.0 / ?nmondo_withWiki AS ?coverageAmongWiki)
 WHERE {
   # items that have at least one Wikipedia sitelink
   {
     SELECT (COUNT(DISTINCT ?item) AS ?nsnomed_withWiki)
     WHERE {
-      ?item wdt:P5806 ?snomedId .
+      ?item wdt:P5270 ?mondoId .
       ?art schema:about ?item ;
             schema:isPartOf ?site .
       ?site wikibase:wikiGroup "wikipedia" .
@@ -28,7 +28,7 @@ WHERE {
   {
     SELECT ?lang (COUNT(DISTINCT ?wikidata) AS ?nItems)
     WHERE {
-      ?wikidata wdt:P5806 ?snomedId .
+      ?wikidata wdt:P5270 ?mondoId .
       ?article schema:about ?wikidata ;
                schema:inLanguage ?lang ;
                schema:isPartOf ?site .
@@ -42,5 +42,4 @@ WHERE {
 ORDER BY DESC(?coverageAmongWiki)
 
 """ ;
-    schema:target <https://sparql.uniprot.org/sparql/>, #clever and wikdi
-        <https://www.bgee.org/sparql/>, <https://sparql.omabrowser.org/sparql/> .
+    schema:target <https://qlever.dev/wikidata>, <https://query.wikidata.org/>  .
