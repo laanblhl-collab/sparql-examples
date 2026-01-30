@@ -1,0 +1,46 @@
+@prefix ex: <https://www.bgee.org/sparql/.well-known/sparql-examples/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <https://schema.org/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+ex:001 a sh:SPARQLExecutable,
+        sh:SPARQLSelectExecutable ;
+    rdfs:comment "Coverage of the SNOMED-CT terminology wikidata property across 6 languages"@en ;
+    sh:prefixes _:sparql_examples_prefixes ;
+    sh:select """
+PREFIX wikibase: <http://wikiba.se/ontology#>
+PREFIX schema: <http://schema.org/>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+SELECT ?lang ?nItems ?nsnomed_withWiki
+       (?nItems * 1.0 / ?nsnomed_withWiki AS ?coverageAmongWiki)
+WHERE {
+  # items that have at least one Wikipedia sitelink
+  {
+    SELECT (COUNT(DISTINCT ?item) AS ?nsnomed_withWiki)
+    WHERE {
+      ?item wdt:P5806 ?snomedId .
+      ?art schema:about ?item ;
+            schema:isPartOf ?site .
+      ?site wikibase:wikiGroup "wikipedia" .
+    }
+  }
+  # items with an article in each specific language
+  {
+    SELECT ?lang (COUNT(DISTINCT ?wikidata) AS ?nItems)
+    WHERE {
+      ?wikidata wdt:P5806 ?snomedId .
+      ?article schema:about ?wikidata ;
+               schema:inLanguage ?lang ;
+               schema:isPartOf ?site .
+               ?site wikibase:wikiGroup "wikipedia" .
+               VALUES ?lang { "en" "fr" "pt" "de" "es" "nl" }
+      
+    }
+    GROUP BY ?lang
+  }
+}
+ORDER BY DESC(?coverageAmongWiki)
+
+""" ;
+    schema:target <https://sparql.uniprot.org/sparql/>, #clever and wikdi
+        <https://www.bgee.org/sparql/>, <https://sparql.omabrowser.org/sparql/> .
