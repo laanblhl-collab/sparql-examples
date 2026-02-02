@@ -34,4 +34,4 @@ WHERE {
 GROUP BY ?prop ?propLabel
 ORDER BY ?prop
 """ ;
-    schema:target <https://qlever.dev/wikidata>, <https://query.wikidata.org/>  .
+    schema:target <https://query.wikidata.org/>  .
