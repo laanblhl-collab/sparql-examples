@@ -10,6 +10,7 @@ In this github pages we have a HTML rendering for all them.
  * [Ontology Overlap](./examples/Ontoverlap/)
  * [Ontology Total](./examples/Totamount/)
  * [Update Consistency](./examples/Consistency/)
+ * [SSSOM mapping example](./examples/SSSOM example/)
  * [UniProt](./examples/UniProt/)
 
 We also collect [some basic statistics on the different SPARQL features in use](./examples/algebra-statistics.md)
