@@ -31,4 +31,4 @@ WHERE {
 # ORDER BY DESC(?itemLabel) # optional adjust as needed
 LIMIT 10000  # adjust as needed to avoid timeouts
 """ ;
-    schema:target <https://query.wikidata.org/>  .
+    schema:target <https://qlever.dev/wikidata>, <https://query.wikidata.org/>  .

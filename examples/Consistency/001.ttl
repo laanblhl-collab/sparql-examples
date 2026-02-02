@@ -35,4 +35,4 @@ WHERE {
 GROUP BY ?prop ?propLabel ?yearMonth
 ORDER BY ?prop ?yearMonth
 """ ;
-    schema:target <https://query.wikidata.org/>  .
+    schema:target <https://qlever.dev/wikidata>, <https://query.wikidata.org/>  .
