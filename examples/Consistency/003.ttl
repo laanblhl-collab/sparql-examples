@@ -1,0 +1,37 @@
+@prefix ex: <https://www.bgee.org/sparql/.well-known/sparql-examples/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <https://schema.org/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+ex:003 a sh:SPARQLExecutable,
+        sh:SPARQLSelectExecutable ;
+    rdfs:comment "time stamp of ontologies edits with item title attached"@en ;
+    sh:prefixes _:sparql_examples_prefixes ;
+    sh:select """
+PREFIX wikibase: <http://wikiba.se/ontology#>
+PREFIX schema: <http://schema.org/>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+PREFIX wikibase: <http://wikiba.se/ontology#>
+PREFIX schema: <http://schema.org/>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+PREFIX bd: <http://www.bigdata.com/rdf#>
+SELECT ?prop ?propLabel ?item ?itemLabel ?modified
+WHERE {
+  VALUES ?prop {
+    wdt:P5806
+    wdt:P699
+    wdt:P5270
+    wdt:P1550
+  }
+
+  ?item ?prop ?id .
+  ?item schema:dateModified ?modified .
+
+  SERVICE wikibase:label {
+    bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en".
+  }
+}
+# ORDER BY DESC(?itemLabel) # optional adjust as needed
+LIMIT 10000  # adjust as needed to avoid timeouts
+""" ;
+    schema:target <https://qlever.dev/wikidata>, <https://query.wikidata.org/>  .

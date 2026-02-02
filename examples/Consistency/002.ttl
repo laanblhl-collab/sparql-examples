@@ -1,0 +1,37 @@
+@prefix ex: <https://www.bgee.org/sparql/.well-known/sparql-examples/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <https://schema.org/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+ex:002 a sh:SPARQLExecutable,
+        sh:SPARQLSelectExecutable ;
+    rdfs:comment "Most recent and most distant edits of ontologies"@en ;
+    sh:prefixes _:sparql_examples_prefixes ;
+    sh:select """
+PREFIX wikibase: <http://wikiba.se/ontology#>
+PREFIX schema: <http://schema.org/>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+PREFIX bd: <http://www.bigdata.com/rdf#>
+SELECT ?prop ?propLabel
+       (COUNT(DISTINCT ?item) AS ?nItems)
+       (MIN(?modified) AS ?oldestEdit)
+       (MAX(?modified) AS ?mostRecentEdit)
+WHERE {
+  VALUES ?prop {
+    wdt:P5806   # SNOMED CT ID
+    wdt:P699    # Disease Ontology ID
+    wdt:P5270   # Mondo ID
+    wdt:P1550   # Orphanet ID
+  }
+
+  ?item ?prop ?id .
+  ?item schema:dateModified ?modified .
+
+  SERVICE wikibase:label {
+    bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en".
+  }
+}
+GROUP BY ?prop ?propLabel
+ORDER BY ?prop
+""" ;
+    schema:target <https://qlever.dev/wikidata>, <https://query.wikidata.org/>  .
